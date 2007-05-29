@@ -1,12 +1,12 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
-Version:	1.5a
+Version:	1.5c
 Release:	%mkrel 4
 License:	BSD
 Group:		System/Servers
 URL:		http://niels.xtdnet.nl/honeyd/
 Source0:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz
-Source1:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz.sig
+#Source1:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz.sig
 Source2:	%{name}.conf
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
@@ -14,12 +14,13 @@ Source5:	%{name}-webserver.sysconfig
 Source6:	%{name}.logrotate
 Patch0:		%{name}.Makefile.patch
 Patch1:		honeyd-1.5a-nmap-prints.diff
-Patch2:		honeyd-1.5a-lib64.diff
+Patch2:		honeyd-lib64.diff
 Patch3:		%{name}-1.0-pidsock.diff
 Patch4:		%{name}-1.0-tmpdir.diff
-Patch5:		honeyd-1.5a-DESTDIR.diff
+Patch5:		honeyd-mkinstalldirs.diff
 Patch6:		honeyd-pypcap_DESTDIR.diff
 Patch7:		honeyd-1.5a-python_x86_64.diff
+Patch8:		honeyd-pcre_includes.diff
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 Requires(pre): rpm-helper
@@ -29,7 +30,6 @@ BuildRequires:	libevent-devel >= 1.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libpcre-devel
-BuildRequires:	libdnsres-devel
 BuildRequires:	flex bison
 BuildRequires:	automake1.7
 BuildRequires:	python-devel
@@ -94,9 +94,10 @@ This package contains development files for %{name}
 %patch2 -p0 -b .lib64
 %patch3 -p1 -b .pidsock
 %patch4 -p1 -b .tmpdir
-%patch5 -p0 -b .DESTDIR
+%patch5 -p0 -b .mkinstalldirs
 %patch6 -p0 -b .DESTDIR
 %patch7 -p0 
+%patch8 -p0 
 
 cp %{SOURCE2} %{name}.conf
 cp %{SOURCE3} %{name}.init
@@ -108,6 +109,8 @@ cp %{SOURCE6} %{name}.logrotate
 export WANT_AUTOCONF_2_5=1
 rm -f configure
 libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7
+
+export PCREINC="-I%{_includedir}"
 
 %configure2_5x \
     --enable-shared \
@@ -244,5 +247,3 @@ touch %{buildroot}/var/log/honeyd/servicelog.log
 %defattr(-,root,root)
 %dir %{_includedir}/%{name}
 %attr(0644,root,root) %{_includedir}/%{name}/*.h
-
-
