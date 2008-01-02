@@ -44,6 +44,7 @@ BuildRequires:	python
 BuildRequires:	python-devel
 # it's either readline or libedit. it seems almost each time libedit is preferred.
 BuildConflicts:	edit-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Honeyd is a small daemon that creates virtual hosts on a network.
