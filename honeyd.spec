@@ -1,12 +1,11 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
 Version:	1.5c
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	BSD
 Group:		System/Servers
-URL:		http://niels.xtdnet.nl/honeyd/
+URL:		http://www.honeyd.org/
 Source0:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz
-#Source1:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz.sig
 Source2:	%{name}.conf
 Source3:	%{name}.init
 Source4:	%{name}.sysconfig
@@ -21,6 +20,7 @@ Patch5:		honeyd-mkinstalldirs.diff
 Patch6:		honeyd-pypcap_DESTDIR.diff
 Patch7:		honeyd-1.5a-python_x86_64.diff
 Patch8:		honeyd-pcre_includes.diff
+Patch9:		honeyd-external_python_packages.diff
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 Requires(pre): rpm-helper
@@ -98,6 +98,7 @@ This package contains development files for %{name}
 %patch6 -p0 -b .DESTDIR
 %patch7 -p0 
 %patch8 -p0 
+%patch9 -p0 
 
 cp %{SOURCE2} %{name}.conf
 cp %{SOURCE3} %{name}.init
@@ -134,7 +135,7 @@ Use 'urpmi arpd' to install it.
 EOF
 
 %install
-[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 # don't fiddle with the initscript!
 export DONT_GPRINTIFY=1
@@ -192,7 +193,7 @@ touch %{buildroot}/var/log/honeyd/servicelog.log
 %{_initrddir}/%{name} restart
 
 %clean
-[ -n "%{buildroot}" -a "%{buildroot}" != / ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
