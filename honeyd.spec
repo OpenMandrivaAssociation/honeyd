@@ -144,7 +144,7 @@ install -d %{buildroot}%{_initrddir}
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 install -d %{buildroot}%{_sysconfdir}/logrotate.d
 install -d %{buildroot}%{_datadir}/%{name}/scripts
-install -d %{buildroot}%{_localstatedir}/%{name}/tmp
+install -d %{buildroot}%{_localstatedir}/lib/%{name}/tmp
 install -d %{buildroot}/var/run/%{name}
 install -d %{buildroot}/var/log/%{name}
 
@@ -158,7 +158,7 @@ install -m0644 %{name}.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -m0644 %{name}-webserver.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/%{name}-webserver
 install -m0644 %{name}.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
-mv %{buildroot}%{_datadir}/%{name}/webserver/htdocs %{buildroot}%{_localstatedir}/%{name}/html
+mv %{buildroot}%{_datadir}/%{name}/webserver/htdocs %{buildroot}%{_localstatedir}/lib/%{name}/html
 
 # cleanup
 rm -f %{buildroot}%{_datadir}/%{name}/README
@@ -173,7 +173,7 @@ touch %{buildroot}/var/log/honeyd/honeyd.log
 touch %{buildroot}/var/log/honeyd/servicelog.log
 
 %pre
-%_pre_useradd %{name} %{_localstatedir}/%{name} /bin/false
+%_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/false
 
 %postun
 %_postun_userdel %{name}
@@ -221,7 +221,7 @@ rm -rf %{buildroot}
 #
 %dir %attr(0755,%{name},%{name}) /var/run/%{name}
 %dir %attr(0755,%{name},%{name}) /var/log/%{name}
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/tmp
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/tmp
 #
 %attr(0644,%{name},%{name}) %ghost %config(noreplace) /var/log/honeyd/honeyd.log
 %attr(0644,%{name},%{name}) %ghost %config(noreplace) /var/log/honeyd/servicelog.log
@@ -229,19 +229,19 @@ rm -rf %{buildroot}
 %files webserver
 %defattr(-,root,root)
 %config(noreplace) %attr(0644,root,root) %{_sysconfdir}/sysconfig/%{name}-webserver
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html/graphs
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html/images
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html/styles
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html/templates
-%dir %attr(0755,%{name},%{name}) %{_localstatedir}/%{name}/html/templates/inc
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/graphs/*.gif
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/images/*.gif
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/styles/*.css
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/templates/inc/*.tmpl
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/templates/*.tmpl
-%attr(0644,%{name},%{name}) %{_localstatedir}/%{name}/html/*.py
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/graphs
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/images
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/styles
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/templates
+%dir %attr(0755,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/templates/inc
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/graphs/*.gif
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/images/*.gif
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/styles/*.css
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/templates/inc/*.tmpl
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/templates/*.tmpl
+%attr(0644,%{name},%{name}) %{_localstatedir}/lib/%{name}/html/*.py
 %attr(0644,root,root) %{_datadir}/%{name}/webserver/*.py
 
 %files devel
