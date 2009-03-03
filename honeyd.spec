@@ -1,7 +1,7 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
 Version:	1.5c
-Release:	%mkrel 7
+Release:	%mkrel 8
 License:	BSD
 Group:		System/Servers
 URL:		http://www.honeyd.org/
@@ -14,7 +14,7 @@ Source6:	%{name}.logrotate
 Patch0:		%{name}.Makefile.patch
 Patch1:		honeyd-1.5a-nmap-prints.diff
 Patch2:		honeyd-lib64.diff
-Patch3:		%{name}-1.0-pidsock.diff
+Patch3:		%{name}-1.5c-pidsock.patch
 Patch4:		%{name}-1.0-tmpdir.diff
 Patch5:		honeyd-mkinstalldirs.diff
 Patch6:		honeyd-pypcap_DESTDIR.diff
@@ -37,7 +37,6 @@ BuildRequires:	readline-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	rrdtool
 BuildRequires:	zlib-devel
-BuildRequires:	python-dnet
 BuildRequires:	python-dpkt
 BuildRequires:	python-pypcap
 BuildRequires:	python
