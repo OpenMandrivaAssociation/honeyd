@@ -1,7 +1,7 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
 Version:	1.5c
-Release:	%mkrel 10
+Release:	%mkrel 11
 License:	BSD
 Group:		System/Servers
 URL:		http://www.honeyd.org/
