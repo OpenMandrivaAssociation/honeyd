@@ -1,7 +1,7 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
 Version:	1.5c
-Release:	%mkrel 11
+Release:	%mkrel 12
 License:	BSD
 Group:		System/Servers
 URL:		http://www.honeyd.org/
@@ -31,7 +31,7 @@ BuildRequires:	libdnet-devel
 BuildRequires:	libpcap-devel
 BuildRequires:	libpcre-devel
 BuildRequires:	flex bison
-BuildRequires:	automake1.7
+BuildRequires:	automake
 BuildRequires:	python-devel
 BuildRequires:	readline-devel
 BuildRequires:	ncurses-devel
@@ -108,7 +108,7 @@ cp %{SOURCE6} %{name}.logrotate
 %build
 export WANT_AUTOCONF_2_5=1
 rm -f configure
-libtoolize --copy --force; aclocal-1.7; autoconf; automake-1.7
+libtoolize --copy --force; aclocal; autoconf; automake
 
 export PCREINC="-I%{_includedir}"
 
