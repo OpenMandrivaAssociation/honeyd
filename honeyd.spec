@@ -106,12 +106,7 @@ cp %{SOURCE5} %{name}-webserver.sysconfig
 cp %{SOURCE6} %{name}.logrotate
 
 %build
-export WANT_AUTOCONF_2_5=1
-rm -f configure
-libtoolize --copy --force; aclocal; autoconf; automake
-
-export PCREINC="-I%{_includedir}"
-
+autoreconf -fi
 %configure2_5x \
     --enable-shared \
     --enable-static \
