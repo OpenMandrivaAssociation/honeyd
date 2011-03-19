@@ -21,6 +21,7 @@ Patch6:		honeyd-pypcap_DESTDIR.diff
 Patch7:		honeyd-1.5a-python_x86_64.diff
 Patch8:		honeyd-pcre_includes.diff
 Patch9:		honeyd-external_python_packages.diff
+Patch10:	honeyd-1.5c-libevent2.patch
 Requires(post): rpm-helper
 Requires(preun): rpm-helper
 Requires(pre): rpm-helper
@@ -98,6 +99,7 @@ This package contains development files for %{name}
 %patch7 -p0 
 %patch8 -p0 
 %patch9 -p0 
+%patch10 -p1 -b .libevent
 
 cp %{SOURCE2} %{name}.conf
 cp %{SOURCE3} %{name}.init
