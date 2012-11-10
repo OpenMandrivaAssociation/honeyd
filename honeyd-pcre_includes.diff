@@ -1,0 +1,20 @@
+--- configure.in	2007-05-29 23:27:36.000000000 +0200
++++ configure.in.oden	2007-05-29 23:30:49.000000000 +0200
+@@ -211,7 +211,7 @@
+ 	PCREINC="-I$withval/include"
+ 	PCRELIB="-L$withval/src -lpcre `$withval/pcre-config --libs`"
+      elif test -x $withval/bin/pcre-config; then
+-	PCREINC="`$withval/bin/pcre-config --cflags`"
++	PCREINC="-I${includedir}"
+ 	PCRELIB="`$withval/bin/pcre-config --libs`"
+      else
+         AC_MSG_RESULT(no)
+@@ -224,7 +224,7 @@
+ [ dnl This is the default case so let's just use AC_PATH_PROG! --CPK.
+   AC_PATH_PROG(pcreconfig, pcre-config, "no")
+   if test "$pcreconfig" != "no"; then
+-     PCREINC="`$pcreconfig --cflags`"
++     PCREINC="-I${includedir}"
+      PCRELIB="`$pcreconfig --libs`"
+   fi]
+ )

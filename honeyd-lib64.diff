@@ -1,0 +1,132 @@
+--- configure.in	2007-05-28 08:08:34.000000000 +0200
++++ configure.in.oden	2007-05-29 21:45:41.000000000 +0200
+@@ -59,7 +59,7 @@
+         owd=`pwd`
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	PCAPINC="-I$withval -I$withval/bpf"
+-	PCAPLIB="-L$withval -lpcap"
++	PCAPLIB="-L${libdir} -lpcap"
+      else
+         AC_ERROR(pcap.h or libpcap.a not found in $withval)
+      fi
+@@ -67,7 +67,7 @@
+   esac ],
+ [ if test -f ${prefix}/include/pcap.h; then
+      PCAPINC="-I${prefix}/include"
+-     PCAPLIB="-L${prefix}/lib -lpcap"
++     PCAPLIB="-L${libdir} -lpcap"
+   elif test -f /usr/include/pcap/pcap.h; then
+      PCAPINC="-I/usr/include/pcap"
+      PCAPLIB="-lpcap"
+@@ -107,7 +107,7 @@
+      AC_MSG_RESULT($withval)
+      if test -f $withval/src/libdnet.a; then
+ 	DNETINC="-I$withval/include"
+-	DNETLIB="-L$withval/src -ldnet `$withval/dnet-config --libs`"
++	DNETLIB="-L${libdir}/src -ldnet `$withval/dnet-config --libs`"
+      elif test -x $withval/bin/dnet-config; then
+ 	DNETINC="`$withval/bin/dnet-config --cflags`"
+ 	DNETLIB="`$withval/bin/dnet-config --libs`"
+@@ -162,12 +162,12 @@
+         owd=`pwd`
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+         EVENTINC="-I$withval"
+-        EVENTLIB="-L$withval -levent"
+-     elif test -f $withval/include/event.h -a -f $withval/lib/libevent.a; then
++        EVENTLIB="-L${libdir} -levent"
++     elif test -f $withval/include/event.h -a -f ${libdir}/libevent.a; then
+         owd=`pwd`
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	EVENTINC="-I$withval/include"
+-	EVENTLIB="-L$withval/lib -levent"
++	EVENTLIB="-L${libdir} -levent"
+      else
+         AC_ERROR(event.h or libevent.a not found in $withval)
+      fi
+@@ -175,7 +175,7 @@
+   esac ],
+ [ if test -f ${prefix}/include/event.h; then
+      EVENTINC="-I${prefix}/include"
+-     EVENTLIB="-L${prefix}/lib -levent"
++     EVENTLIB="-L${libdir} -levent"
+   elif test -f /usr/include/event/event.h; then
+      EVENTINC="-I/usr/include/event"
+      EVENTLIB="-levent"
+@@ -252,7 +252,7 @@
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	AC_DEFINE(HAVE_LIBEDIT, 1, [Define if you have libedit])
+         EDITINC="-I$withval"
+-        EDITLIB="-L$withval -ledit"
++        EDITLIB="-L${libdir} -ledit"
+      else
+         AC_ERROR(histedit.h or libedit.a not found in $withval)
+      fi
+@@ -260,7 +260,7 @@
+   esac ],
+ [ if test -f ${prefix}/include/histedit.h; then
+      EDITINC="-I${prefix}/include"
+-     EDITLIB="-L${prefix}/lib -ledit"
++     EDITLIB="-L${libdir} -ledit"
+   elif test -f /usr/include/edit/histedit.h; then
+      EDITINC="-I/usr/include/edit"
+      EDITLIB="-ledit"
+@@ -292,7 +292,7 @@
+         if cd $withval; then withval=`pwd`; cd $owd; fi
+ 	AC_DEFINE(HAVE_LIBREADLINE, 1, [Define if you have libreadline])
+         EDITINC="-I$withval"
+-        EDITLIB="-L$withval -lreadline"
++        EDITLIB="-L${libdir} -lreadline"
+      else
+         AC_ERROR(readline/readline.h or libreadline.a not found in $withval)
+      fi
+@@ -300,7 +300,7 @@
+   esac ],
+ [ if test -f ${prefix}/include/readline/readline.h; then
+      EDITINC="-I${prefix}/include"
+-     EDITLIB="-L${prefix}/lib -lreadline"
++     EDITLIB="-L${libdir} -lreadline"
+   elif test -f /usr/include/readline/readline.h; then
+      EDITLIB="-lreadline"
+   else
+@@ -327,8 +327,8 @@
+                 if test "x$withval" = "xno" ; then
+                         AC_MSG_ERROR([zlib is required])
+                 fi
+-                if test -d "$withval/lib"; then
+-                        ZLIB="-L${withval}/lib"
++                if test -d "${libdir}"; then
++                        ZLIB="-L${libdir}"
+                 else
+                         ZLIB="-L${withval}"
+                 fi
+@@ -396,7 +396,7 @@
+     AC_MSG_CHECKING(for Python linkage)
+     py_prefix=`$PATH_PYTHON -c 'import sys; print sys.prefix'`
+     py_ver=`$PATH_PYTHON -c 'import sys; print sys.version[[:3]]'`
+-    py_libdir="${py_prefix}/lib/python${py_ver}"
++    py_libdir="${libdir}/python${py_ver}"
+     PYTHONINC="-I${py_prefix}/include/python${py_ver}"
+     py_libs=`grep '^LIBS=' $py_libdir/config/Makefile | sed -e 's/^.*=//'`
+     py_libc=`grep '^LIBC=' $py_libdir/config/Makefile | sed -e 's/^.*=//'`
+@@ -707,9 +707,10 @@
+ 
+     dnl ugly, ugly hack		     
+     LIBCGUESS=`echo /lib/libc.so.*`
+-    USRLIBCGUESS=`echo /usr/lib/libc.so*`
++    LIB64CGUESS=`echo /lib64/libc.so.*`
++    USRLIBCGUESS=`echo ${libdir}/libc.so*`
+     
+-    if test "$USRLIBCGUESS" = "/usr/lib/libc.so.*"; then
++    if test "$USRLIBCGUESS" = "${libdir}/libc.so.*"; then
+        USRLIBCGUESS=""
+     fi
+     
+@@ -717,7 +718,7 @@
+        LIBCGUESS=""
+     fi
+     
+-    for TESTLIB in libc.so `echo $USRLIBCGUESS` `echo $LIBCGUESS`
++    for TESTLIB in libc.so `echo $USRLIBCGUESS` `echo $LIBCGUESS` `echo $LIB64CGUESS`
+     do
+         AC_MSG_CHECKING(if we can access libc with $TESTLIB)
+         AC_TRY_RUN(

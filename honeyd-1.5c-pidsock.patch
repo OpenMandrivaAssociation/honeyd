@@ -1,0 +1,61 @@
+diff -Naur --exclude '*.orig' honeyd-1.5c/honeyd.8 honeyd-1.5c-pidsock/honeyd.8
+--- honeyd-1.5c/honeyd.8	2007-05-28 08:05:05.000000000 +0200
++++ honeyd-1.5c-pidsock/honeyd.8	2009-03-03 14:49:00.000000000 +0100
+@@ -594,7 +594,7 @@
+ .Ar 10.0.0.1 10.2.0.0/24 10.2.1.0/24 .
+ .Sh FILES
+ .Bl -tag -width {prefix}/share/honeyd/xprobe2.conf
+-.It Pa /var/run/honeyd.pid
++.It Pa /var/run/honeyd/honeyd.pid
+ The PID of the current daemon.
+ .It Pa {prefix}/lib/honeyd/webserver/
+ Python modules and web server documents used by the internal webserver.
+diff -Naur --exclude '*.orig' honeyd-1.5c/honeydctl.1 honeyd-1.5c-pidsock/honeydctl.1
+--- honeyd-1.5c/honeydctl.1	2007-05-28 08:05:05.000000000 +0200
++++ honeyd-1.5c-pidsock/honeydctl.1	2009-03-03 14:49:00.000000000 +0100
+@@ -45,8 +45,8 @@
+ to file system globbing.
+ .El
+ .Sh FILES
+-.Bl -tag -width /var/run/honeyd.sock
+-.It Pa /var/run/honeyd.pid
++.Bl -tag -width /var/lib/honeyd/honeyd.sock
++.It Pa /var/run/honeyd/honeyd.pid
+ The default socket that
+ .Nm
+ connects to.
+diff -Naur --exclude '*.orig' honeyd-1.5c/honeydctl.c honeyd-1.5c-pidsock/honeydctl.c
+--- honeyd-1.5c/honeydctl.c	2007-05-28 08:12:52.000000000 +0200
++++ honeyd-1.5c-pidsock/honeydctl.c	2009-03-03 14:49:00.000000000 +0100
+@@ -92,7 +92,7 @@
+ char Buffer[LINELEN];
+ 
+ #define CTLNAME		"honeydctl"
+-#define HONEYD_SOCK	"/var/run/honeyd.sock"
++#define HONEYD_SOCK	"/var/lib/honeyd/honeyd.sock"
+ 
+ int
+ usage()
+diff -Naur --exclude '*.orig' honeyd-1.5c/honeyd.h honeyd-1.5c-pidsock/honeyd.h
+--- honeyd-1.5c/honeyd.h	2007-05-28 08:12:52.000000000 +0200
++++ honeyd-1.5c-pidsock/honeyd.h	2009-03-03 14:49:00.000000000 +0100
+@@ -32,7 +32,7 @@
+ #ifndef _HONEYD_H_
+ #define _HONEYD_H_
+ 
+-#define PIDFILE			"/var/run/honeyd.pid"
++#define PIDFILE			"/var/run/honeyd/honeyd.pid"
+ 
+ #define TCP_DEFAULT_SIZE	512
+ #define TCP_MAX_SIZE		4096
+diff -Naur --exclude '*.orig' honeyd-1.5c/ui.h honeyd-1.5c-pidsock/ui.h
+--- honeyd-1.5c/ui.h	2007-05-28 08:12:52.000000000 +0200
++++ honeyd-1.5c-pidsock/ui.h	2009-03-03 14:49:00.000000000 +0100
+@@ -44,6 +44,6 @@
+ 
+ void ui_init(void);
+ 
+-#define UI_FIFO		"/var/run/honeyd.sock"
++#define UI_FIFO		"/var/lib/honeyd/honeyd.sock"
+ 
+ #endif /* !_UI_H_ */

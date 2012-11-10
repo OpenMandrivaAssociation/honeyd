@@ -1,0 +1,13 @@
+Index: setup.py
+===================================================================
+--- pypcap/setup.py
++++ pypcap/setup.py	2007-03-21 21:26:37.000000000 +0100
+@@ -46,7 +46,7 @@
+                 incdirs = [ os.path.join(d, sd) ]
+                 if os.path.exists(os.path.join(d, sd, 'pcap.h')):
+                     cfg['include_dirs'] = [ os.path.join(d, sd) ]
+-                    for sd in ('lib', ''):
++                    for sd in ('lib', 'lib64', ''):
+                         for lib in (('pcap', 'libpcap.a'),
+                                     ('pcap', 'libpcap.dylib'),
+                                     ('wpcap', 'wpcap.lib')):

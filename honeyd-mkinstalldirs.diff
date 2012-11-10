@@ -1,0 +1,11 @@
+--- Makefile.am	2007-05-28 08:11:11.000000000 +0200
++++ Makefile.am.oden	2007-05-29 23:11:44.000000000 +0200
+@@ -231,7 +231,7 @@
+ 	pydatahoneyd.c pydatahoneyd.h
+ 
+ install-data-local:
+-	$(mkdir_p) "$(DESTDIR)$(honeyddatadir)"
++	$(mkinstalldirs) $(DESTDIR)$(honeyddatadir)
+ 	(cd $(top_srcdir) && tar -cf - $(top_srcdir)/webserver) | \
+ 	(cd $(DESTDIR)$(honeyddatadir) && tar -xf -)
+ 	find $(DESTDIR)$(honeyddatadir)/webserver -type f | xargs chmod a+r

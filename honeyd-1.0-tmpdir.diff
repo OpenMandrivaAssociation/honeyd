@@ -1,0 +1,72 @@
+diff -Naur honeyd-1.0/honeyd.c honeyd-1.0.oden/honeyd.c
+--- honeyd-1.0/honeyd.c	2004-12-31 20:13:37.000000000 +0100
++++ honeyd-1.0.oden/honeyd.c	2005-01-03 12:19:41.030631608 +0100
+@@ -342,8 +342,8 @@
+ 		    "%s/graphs/traffic_hourly.gif", honeyd_webserver_root);
+ 
+ 		rrdtool_graph(honeyd_traffic_db, filename, &tv, NULL,
+-		    "DEF:inoctets=/tmp/honeyd_traffic.rrd:input:AVERAGE "
+-		    "DEF:outoctets=/tmp/honeyd_traffic.rrd:output:AVERAGE "
++		    "DEF:inoctets=/var/lib/honeyd/tmp/honeyd_traffic.rrd:input:AVERAGE "
++		    "DEF:outoctets=/var/lib/honeyd/tmp/honeyd_traffic.rrd:output:AVERAGE "
+ 		    "AREA:inoctets#00FF00:\"In traffic\" "
+ 		    "LINE1:outoctets#0000FF:\"Out traffic\"");
+ 
+@@ -355,8 +355,8 @@
+ 		    "%s/graphs/traffic_daily.gif", honeyd_webserver_root);
+ 
+ 		rrdtool_graph(honeyd_traffic_db, filename, &tv, NULL,
+-		    "DEF:inoctets=/tmp/honeyd_traffic.rrd:input:AVERAGE "
+-		    "DEF:outoctets=/tmp/honeyd_traffic.rrd:output:AVERAGE "
++		    "DEF:inoctets=/var/lib/honeyd/tmp/honeyd_traffic.rrd:input:AVERAGE "
++		    "DEF:outoctets=/var/lib/honeyd/tmp/honeyd_traffic.rrd:output:AVERAGE "
+ 		    "AREA:inoctets#00FF00:\"In traffic\" "
+ 		    "LINE1:outoctets#0000FF:\"Out traffic\"");
+ 	}
+@@ -366,7 +366,7 @@
+ honeyd_rrd_start(const char *rrdtool_path)
+ {
+ 	/* Initialize our traffic stats for rrdtool */
+-	char *honeyd_traffic_filename = "/tmp/honeyd_traffic.rrd";
++	char *honeyd_traffic_filename = "/var/lib/honeyd/tmp/honeyd_traffic.rrd";
+ 	if ((honeyd_rrd_drv = rrdtool_init(rrdtool_path)) == NULL)
+ 		errx(1, "%s: cannot start rrdtool", __func__);
+ 	if ((honeyd_traffic_db = rrdtool_db_start(honeyd_rrd_drv, 
+diff -Naur honeyd-1.0/rrdtool.c honeyd-1.0.oden/rrdtool.c
+--- honeyd-1.0/rrdtool.c	2004-12-31 20:13:43.000000000 +0100
++++ honeyd-1.0.oden/rrdtool.c	2005-01-03 12:19:02.091551248 +0100
+@@ -548,7 +548,7 @@
+ 	drv = rrdtool_init(honeyd_rrdtool_path);
+ 	assert(drv != NULL);
+ 
+-	db = rrdtool_db_start(drv, "/tmp/myrouter.rrd", 300);
++	db = rrdtool_db_start(drv, "/var/lib/honeyd/tmp/myrouter.rrd", 300);
+ 	assert(db != NULL);
+ 
+ 	rrdtool_db_datasource(db, "input", "COUNTER", 600);
+@@ -568,12 +568,12 @@
+ 		rrdtool_db_update(db, &tv, line);
+ 	}
+ 
+-	unlink("/tmp/honeyd_myrouter.gif");
++	unlink("/var/lib/honeyd/tmp/honeyd_myrouter.gif");
+ 	snprintf(line, sizeof(line),
+-	    "graph /tmp/honeyd_myrouter.gif --start %ld --end %ld "
++	    "graph /var/lib/honeyd/tmp/honeyd_myrouter.gif --start %ld --end %ld "
+ 	    "--height 300 --width 600 "
+-	    "DEF:inoctets=/tmp/myrouter.rrd:input:AVERAGE "
+-	    "DEF:outoctets=/tmp/myrouter.rrd:output:AVERAGE "
++	    "DEF:inoctets=/var/lib/honeyd/tmp/myrouter.rrd:input:AVERAGE "
++	    "DEF:outoctets=/var/lib/honeyd/tmp/myrouter.rrd:output:AVERAGE "
+ 	    "CDEF:mout=outoctets,-1,* "
+ 	    "AREA:inoctets#00FF00:\"In traffic\" "
+ 	    "AREA:mout#0000FF:\"Out traffic\"",
+@@ -582,7 +582,7 @@
+ 
+ 	event_dispatch();
+ 
+-	if (access("/tmp/honeyd_myrouter.gif", R_OK) == -1)
++	if (access("/var/lib/honeyd/tmp/honeyd_myrouter.gif", R_OK) == -1)
+ 		errx(1, "%s: graph creation failed", __func__);
+ 
+ 	rrdtool_free(drv);

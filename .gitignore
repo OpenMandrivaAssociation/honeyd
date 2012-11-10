@@ -1,0 +1,6 @@
+honeyd-1.5c.tar.gz
+honeyd.conf
+honeyd.init
+honeyd.logrotate
+honeyd.sysconfig
+honeyd-webserver.sysconfig

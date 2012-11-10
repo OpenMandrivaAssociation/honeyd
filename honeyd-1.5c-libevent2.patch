@@ -1,0 +1,211 @@
+diff -u honeyd-1.5c/untagging.c honeyd-1.5c/untagging.c
+--- honeyd-1.5c/untagging.c
++++ honeyd-1.5c/untagging.c
+@@ -114,22 +114,29 @@
+ int
+ tag_peek_length(struct evbuffer *evbuf, uint32_t *plength)
+ {
+-	struct evbuffer tmp;
++	struct evbuffer *tmp;
+ 	int res;
+ 
+ 	if (EVBUFFER_LENGTH(evbuf) < 2)
+ 		return (-1);
+ 
+-	tmp = *evbuf;
+-	tmp.buffer += 1;
+-	tmp.off -= 1;
++	tmp = evbuffer_new ();
++	evbuffer_add_reference (tmp, evbuffer_pullup(evbuf, -1),
++				evbuffer_get_length(evbuf), NULL, NULL);
++	if (evbuffer_drain(tmp, 1) == -1) {
++		evbuffer_free (tmp);
++		return (-1);
++	}
+ 
+-	res = decode_int_internal(plength, &tmp, 0);
+-	if (res == -1)
++	res = decode_int_internal(plength, tmp, 0);
++	if (res == -1) {
++		evbuffer_free (tmp);
+ 		return (-1);
++	}
+ 
+ 	*plength += res + 1;
+ 
++	evbuffer_free (tmp);
+ 	return (0);
+ }
+ 
+diff -u honeyd-1.5c/honeydstats.c honeyd-1.5c/honeydstats.c
+--- honeyd-1.5c/honeydstats.c
++++ honeyd-1.5c/honeydstats.c
+@@ -330,30 +330,43 @@
+ static int
+ signature_length(struct evbuffer *evbuf)
+ {
+-	struct evbuffer tmp;
++	struct evbuffer *tmp;
+ 	uint32_t length, tlen;
+ 
+-	tmp = *evbuf;
+-
++	tmp = evbuffer_new();
++	tmp = evbuffer_add_reference(tmp, evbuffer_pullup(evbuf, -1),
++				     evbuffer_get_length(evbuf), NULL, NULL);
+ 	/* name */
+-	if (tag_peek_length(&tmp, &tlen) == -1 || EVBUFFER_LENGTH(&tmp) < tlen)
++	if (tag_peek_length(tmp, &tlen) == -1 || EVBUFFER_LENGTH(tmp) < tlen) {
++		evbuffer_free(tmp);
++		return (-1);
++	}
++
++	if (evbuffer_drain(tmp, tlen) == -1) {
++		evbuffer_free(tmp);
+ 		return (-1);
++	}
+ 		
+ 	length = tlen;
+-	tmp.buffer += tlen;
+-	tmp.off -= tlen;
+ 
+ 	/* signature */
+-	if (tag_peek_length(&tmp, &tlen) == -1 || EVBUFFER_LENGTH(&tmp) < tlen)
++	if (tag_peek_length(tmp, &tlen) == -1 || EVBUFFER_LENGTH(tmp) < tlen) {
++		evbuffer_free(tmp);
+ 		return (-1);
++	}
+ 		
++	if (evbuffer_drain(tmp, tlen) == -1) {
++		evbuffer_free(tmp);
++		return (-1);
++	}
++
+ 	length += tlen;
+-	tmp.buffer += tlen;
+-	tmp.off -= tlen;
+ 
+ 	/* data */
+-	if (tag_peek_length(&tmp, &tlen) == -1 || EVBUFFER_LENGTH(&tmp) < tlen)
++	if (tag_peek_length(tmp, &tlen) == -1 || EVBUFFER_LENGTH(tmp) < tlen) {
++		evbuffer_free(tmp);
+ 		return (-1);
++	}
+ 		
+ 	length += tlen;
+ 
+diff -u honeyd-1.5c/ui.c honeyd-1.5c/ui.c
+--- honeyd-1.5c/ui.c
++++ honeyd-1.5c/ui.c
+@@ -246,7 +246,8 @@
+ 	struct evbuffer *buffer = client->outbuf;
+ 	int n;
+ 
+-	n = write(fd, buffer->buffer, buffer->off);
++	n = write(fd, evbuffer_pullup(buffer, -1),
++		  evbuffer_get_length(buffer));
+ 	if (n == -1) {
+ 		if (errno == EINTR || errno == EAGAIN)
+ 			goto schedule;
+@@ -260,7 +261,7 @@
+ 	evbuffer_drain(buffer, n);
+ 
+  schedule:
+-	if (buffer->off)
++	if (evbuffer_get_length(buffer))
+ 		event_add(&client->ev_write, NULL);
+ }
+ 
+@@ -277,8 +278,8 @@
+ 		return;
+ 	}
+ 
+-	n = mybuf->off;
+-	p = mybuf->buffer;
++	n = evbuffer_get_length (mybuf);
++	p = evbuffer_pullup (mybuf, -1);
+ 	consumed = 0;
+ 	while (n--) {
+ 		consumed++;
+@@ -289,11 +290,12 @@
+ 		 */
+ 		if (*p == '\n') {
+ 			*p = '\0';
+-			ui_handle_command(client->outbuf, mybuf->buffer);
++			ui_handle_command(client->outbuf,
++					  evbuffer_pullup(mybuf, -1));
+ 
+ 			evbuffer_drain(mybuf, consumed);
+-			n = mybuf->off;
+-			p = mybuf->buffer;
++			n = evbuffer_get_length (mybuf);
++			p = evbuffer_pullup (mybuf, -1);
+ 			consumed = 0;
+ 			continue;
+ 		}
+--- honeyd-1.5c.orig/tagging.c	2007-05-28 02:12:52.000000000 -0400
++++ honeyd-1.5c.orig/tagging.c	2011-01-11 20:56:53.000000000 -0500
+@@ -73,7 +73,7 @@ 
+  */
+ 
+ void
+-encode_int(struct evbuffer *evbuf, uint32_t number)
++encode__int(struct evbuffer *evbuf, uint32_t number)
+ {
+ 	int off = 1, nibbles = 0;
+ 	uint8_t data[5];
+@@ -108,7 +108,7 @@ 
+ tag_marshal(struct evbuffer *evbuf, uint8_t tag, void *data, uint16_t len)
+ {
+ 	evbuffer_add(evbuf, &tag, sizeof(tag));
+-	encode_int(evbuf, len);
++	encode__int(evbuf, len);
+ 	evbuffer_add(evbuf, data, len);
+ }
+ 
+@@ -117,10 +117,10 @@ 
+ tag_marshal_int(struct evbuffer *evbuf, uint8_t tag, uint32_t integer)
+ {
+ 	evbuffer_drain(_buf, EVBUFFER_LENGTH(_buf));
+-	encode_int(_buf, integer);
++	encode__int(_buf, integer);
+ 
+ 	evbuffer_add(evbuf, &tag, sizeof(tag));
+-	encode_int(evbuf, EVBUFFER_LENGTH(_buf));
++	encode__int(evbuf, EVBUFFER_LENGTH(_buf));
+ 	evbuffer_add_buffer(evbuf, _buf);
+ }
+ 
+@@ -135,8 +135,8 @@ 
+ {
+ 	evbuffer_drain(_buf, EVBUFFER_LENGTH(_buf));
+ 
+-	encode_int(_buf, tv->tv_sec);
+-	encode_int(_buf, tv->tv_usec);
++	encode__int(_buf, tv->tv_sec);
++	encode__int(_buf, tv->tv_usec);
+ 
+ 	tag_marshal(evbuf, tag, EVBUFFER_DATA(_buf),
+ 	    EVBUFFER_LENGTH(_buf));
+--- honeyd-1.5c.orig/untagging.c	2007-05-28 02:12:52.000000000 -0400
++++ honeyd-1.5c.orig/untagging.c	2011-01-11 20:57:05.000000000 -0500
+@@ -438,7 +438,7 @@ 
+ 	for (i = 0; i < TEST_MAX_INT; i++) {
+ 		int oldlen, newlen;
+ 		oldlen = EVBUFFER_LENGTH(tmp);
+-		encode_int(tmp, integers[i]);
++		encode__int(tmp, integers[i]);
+ 		newlen = EVBUFFER_LENGTH(tmp);
+ 		fprintf(stderr, "\t\tencoded 0x%08x with %d bytes\n",
+ 		    integers[i], newlen - oldlen);
+--- honeyd-1.5c/tagging.h.libevent	2011-03-19 17:21:57.000000000 +0100
++++ honeyd-1.5c/tagging.h	2011-03-19 17:22:08.000000000 +0100
+@@ -86,7 +86,7 @@
+ void tag_marshal(struct evbuffer *evbuf, uint8_t tag, void *data,
+     uint16_t len);
+ 
+-void encode_int(struct evbuffer *evbuf, uint32_t number);
++void encode__int(struct evbuffer *evbuf, uint32_t number);
+ 
+ void tag_marshal_int(struct evbuffer *evbuf, uint8_t tag, uint32_t integer);
+ 

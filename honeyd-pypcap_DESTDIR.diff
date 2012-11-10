@@ -1,0 +1,11 @@
+--- pypcap/Makefile.am	2005-10-31 05:23:07.000000000 +0100
++++ pypcap/Makefile.am.oden	2007-03-21 15:49:11.000000000 +0100
+@@ -13,7 +13,7 @@
+ 	pyrexc pcap.pyx
+ 
+ install:
+-	$(PATH_PYTHON) setup.py install
++	$(PATH_PYTHON) setup.py install --root=$(DESTDIR)
+ 
+ test:
+ 	$(PATH_PYTHON) test.py

@@ -1,0 +1,64 @@
+--- nmap.prints	2005-10-30 18:00:12.000000000 +0100
++++ nmap.prints.oden	2006-03-19 12:43:59.000000000 +0100
+@@ -662,17 +662,19 @@
+ T7(DF=N%W=0%ACK=S%Flags=AR%Ops=)
+ PU(DF=N%TOS=0%IPLEN=38%RIPTL=15C%RID=E%RIPCK=0%UCK=0%ULEN=134%DAT=E)
+ 
+-Fingerprint IBM OS/400 V4R2M0
+-Class IBM | OS/400 | V4 | general purpose
+-TSeq(Class=TD|RI%gcd=<6%SI=<285DC&>206%IPID=I%TS=U)
+-T1(DF=N%W=8000%ACK=S++%Flags=AS%Ops=M)
+-T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
+-T3(Resp=Y%DF=N%W=8000%ACK=S++%Flags=AS%Ops=M)
+-T4(DF=N%W=0%ACK=S%Flags=R%Ops=)
+-T5(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+-T6(DF=N%W=0%ACK=S%Flags=R%Ops=)
+-T7(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+-PU(DF=N%TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
++# Removed for Mandriva Linux
++#
++#Fingerprint IBM OS/400 V4R2M0
++#Class IBM | OS/400 | V4 | general purpose
++#TSeq(Class=TD|RI%gcd=<6%SI=<285DC&>206%IPID=I%TS=U)
++#T1(DF=N%W=8000%ACK=S++%Flags=AS%Ops=M)
++#T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
++#T3(Resp=Y%DF=N%W=8000%ACK=S++%Flags=AS%Ops=M)
++#T4(DF=N%W=0%ACK=S%Flags=R%Ops=)
++#T5(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
++#T6(DF=N%W=0%ACK=S%Flags=R%Ops=)
++#T7(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
++#PU(DF=N%TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
+ 
+ Fingerprint IBM OS/400 V4R5M0
+ Class IBM | OS/400 | V4 | general purpose
+@@ -11083,17 +11085,19 @@
+ T7(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+ PU(DF=N%TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
+ 
+-Fingerprint Microsoft Windows NT 4.0 SP3
+-Class Microsoft | Windows | NT/2K/XP | general purpose
+-TSeq(Class=TD|RI%gcd=<18%SI=<2A00DA&>6B73)
+-T1(DF=Y%W=7FFF|2017%ACK=S++%Flags=AS%Ops=M|MNWNNT)
+-T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
+-T3(Resp=Y%DF=Y%W=7FFF|2017%ACK=S++|O%Flags=AS|A%Ops=M|NNT)
+-T4(DF=N%W=0%ACK=O|S%Flags=R%Ops=)
+-T5(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+-T6(DF=N%W=0%ACK=O|S++%Flags=R%Ops=)
+-T7(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
+-PU(TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
++# Removed for Mandriva Linux
++#
++#Fingerprint Microsoft Windows NT 4.0 SP3
++#Class Microsoft | Windows | NT/2K/XP | general purpose
++#TSeq(Class=TD|RI%gcd=<18%SI=<2A00DA&>6B73)
++#T1(DF=Y%W=7FFF|2017%ACK=S++%Flags=AS%Ops=M|MNWNNT)
++#T2(Resp=Y%DF=N%W=0%ACK=S%Flags=AR%Ops=)
++#T3(Resp=Y%DF=Y%W=7FFF|2017%ACK=S++|O%Flags=AS|A%Ops=M|NNT)
++#T4(DF=N%W=0%ACK=O|S%Flags=R%Ops=)
++#T5(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
++#T6(DF=N%W=0%ACK=O|S++%Flags=R%Ops=)
++#T7(DF=N%W=0%ACK=S++%Flags=AR%Ops=)
++#PU(TOS=0%IPLEN=38%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
+ 
+ Fingerprint Microsoft Windows NT 4.0 SP3
+ Class Microsoft | Windows | NT/2K/XP | general purpose

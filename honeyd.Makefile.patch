@@ -1,0 +1,18 @@
+--- honeyd-0.5/Makefile.am	2003-02-16 01:40:00.000000000 +0100
++++ honeyd-0.5.new/Makefile.am	2003-03-14 22:06:14.000000000 +0100
+@@ -18,12 +18,11 @@
+ ## working on Linux
+ LIBHONEYDFILES= honeyd_overload.lo atomicio.lo fdpass.lo
+ libhoneyd.so: $(LIBHONEYDFILES)
+-	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o libtmp$@.la \
++	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) -o libhoneyd.la \
+ 		-rpath $(libdir)/honeyd $(LIBHONEYDFILES) $(LIBS) $(LDFLAGS) \
+ 		-module -avoid-version -nostdlib @LIBDL@
+-	rm -f libtmp$@.la tmp$@.so* $@
+-	cp .libs/libtmp$@.so $@ || cp .libs/libtmp$@ $@
+-	rm -f .libs/libtmp$@.*
++	cp .libs/$@ $@
++	rm -f .libs/$@.*
+ 
+ libhoneyddir = $(libdir)/honeyd
+ libhoneyd_DATA = libhoneyd.so

@@ -1,0 +1,11 @@
+--- Makefile.am	2008-05-14 10:31:49.000000000 +0200
++++ Makefile.am.oden	2008-05-14 10:39:40.000000000 +0200
+@@ -8,7 +8,7 @@
+ if COND_REGRESS
+   MAYBE_REGRESS = regress
+ endif
+-SUBDIRS = . $(MAYBE_PYPCAP) $(MAYBE_PYDPKT) $(MAYBE_REGRESS)
++SUBDIRS = . $(MAYBE_REGRESS)
+ 
+ AUTOMAKE_OPTIONS = foreign no-dependencies
+ 
