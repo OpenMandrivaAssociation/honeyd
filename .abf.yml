@@ -1,7 +1,2 @@
 sources:
-  "honeyd-1.5c.tar.gz:"	342cc53e8d23c84ecb91c7b66c6e93e7ed2a992a
-  "honeyd.conf:"	9a5b853ef60e28bb5765d3c13999d7e5b8c7acef
-  "honeyd.init:"	68c40bcb5ac5c1a29e38937a059dc2bf7032d061
-  "honeyd.logrotate:"	db107aedec216249f0424dbccbe41e00247a5746
-  "honeyd.sysconfig:"	7f5c430b3b22a71285a0b6db5bc07790323e9d11
-  "honeyd-webserver.sysconfig:"	f9f8f5ad45cd311696c7d2b838290a88c13ee8fa
+  "honeyd-1.5c.tar.gz": 342cc53e8d23c84ecb91c7b66c6e93e7ed2a992a

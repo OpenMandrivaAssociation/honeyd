@@ -1,0 +1,58 @@
+
+# Log packets and connections to the logfile specified
+#HONEYD_LOGFILE="-l /var/log/honeyd/honeyd.log"
+
+# Logs information from service scripts to the log file specified
+#HONEYD_SERVICELOG="-s /var/log/honeyd/servicelog.log"
+
+# Read nmap style fingerprints. The names defined after the token
+# are stored as personalities. The personalities can be used in
+# the configuration file to modify the behaviour of the simulated
+# TCP stack.
+#HONEYD_FINGERPRINTS="-p /usr/share/honeyd/nmap.prints"
+
+# Read xprobe style fingerprints. This file determines how honeyd
+# reacts to ICMP fingerprinting tools.
+#HONEYD_XPROBE="-x /usr/share/honeyd/xprobe2.conf"
+
+# Read the file that associates nmap style fingerprints with xprobe
+# style fingerprints.
+#HONEYD_ASSOC="-a /usr/share/honeyd/nmap.assoc"
+
+# Read the database for passive fingerprinting. The names of the
+# operating systems specified in this file are recognized by
+# honeyd's parser and can be used for dynamic templates.
+#HONEYD_P0F_FILE=""
+
+# Read the configuration in file. It is possible to create host
+# templates with the configuration file that specify which servers
+# should run and which scripts should be started to simulate them.
+# honeyd will reread the configuration file when sent a SIGHUP sig-
+# nal.
+#HONEYD_FILE="-f /etc/honeyd.conf"
+
+# Listen on interface. It is possible to specify multiple inter-
+# faces. If unspecified, all interfaces will be used.
+# Syntaxt examle:
+#HONEYD_INTERFACE="-i eth0 -i eth1 -i eth2 -i eth3"
+
+# Using this flag, Honeyd functions as a traffic statistic collec-
+# tor.  Collected statistics get propagated upstream to an aggrega-
+# tor running at the specified hostname and port. The username and
+# password is used to create a signature on the data packet that
+# can be used to verify the integrity of the data. The statistics
+# can be used to automatically detect anomalies like worm propaga-
+# tion.
+#HONEYD_COLLECTOR="-c host:port:username:password"
+
+# For plugin development.  Reports the directory in which honeyd
+# stores its header files.
+#HONEYD_INCLUDEDIR=""
+
+# The IP address or network (specified in CIDR notation) or IP
+# address ranges to claim (e.g. ``10.0.0.3'', ``10.0.0.0/16'' or
+# ``10.0.0.5-10.0.0.15'').  If unspecified, honeyd will attempt to
+# claim any IP address it sees traffic for.
+
+#HONEYD_NETWORKS=""
+

@@ -244,3 +244,129 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %dir %{_includedir}/%{name}
 %attr(0644,root,root) %{_includedir}/%{name}/*.h
+
+
+%changelog
+* Sat Feb 11 2012 Oden Eriksson <oeriksson@mandriva.com> 1.5c-13mdv2012.0
++ Revision: 772992
+- relink against libpcre.so.1
+
+* Sat Mar 19 2011 Funda Wang <fwang@mandriva.org> 1.5c-12
++ Revision: 647026
+- merge gentoo and ubuntu patch to make it build with libevent 2.0
+- use autoreconf
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - don't force the usage of automake1.7
+    - rebuilt against libevent 2.x
+
+* Sun Oct 04 2009 Oden Eriksson <oeriksson@mandriva.com> 1.5c-10mdv2011.0
++ Revision: 453480
+- rebuild
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+* Tue Mar 03 2009 Guillaume Rousse <guillomovitch@mandriva.org> 1.5c-8mdv2009.1
++ Revision: 347815
+- rebuild for latest tk and readline
+- rediff fuzzy patch
+- drop python-dnet build dependency, it doesn't exists anymore
+
+* Wed Oct 29 2008 Oden Eriksson <oeriksson@mandriva.com> 1.5c-7mdv2009.1
++ Revision: 298257
+- rebuilt against libpcap-1.0.0
+
+* Thu Aug 07 2008 Thierry Vignaud <tv@mandriva.org> 1.5c-6mdv2009.0
++ Revision: 267074
+- rebuild early 2009.0 package (before pixel changes)
+
+  + Pixel <pixel@mandriva.com>
+    - adapt to %%_localstatedir now being /var instead of /var/lib (#22312)
+
+* Wed May 14 2008 Oden Eriksson <oeriksson@mandriva.com> 1.5c-5mdv2009.0
++ Revision: 207062
+- rebuilt against libevent-1.4.4
+- don't touch the externally packaged python packages (P9)
+
+* Wed Jan 02 2008 Olivier Blin <blino@mandriva.org> 1.5c-4mdv2008.1
++ Revision: 140747
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Tue May 29 2007 Oden Eriksson <oeriksson@mandriva.com> 1.5c-4mdv2008.0
++ Revision: 32702
+- 1.5c
+- rediffed and added some patches
+
+
+* Wed Mar 21 2007 Michael Scherer <misc@mandriva.org> 1.5a-4mdv2007.1
++ Revision: 147633
+- fix Build on x86_64
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - fix deps (python)
+    - added another DESTDIR patch, but don't ship this pypcap module
+    - bunzip the sources
+    - fix deps
+    - rebuild
+
+  + Emmanuel Andry <eandry@mandriva.org>
+    - Import honeyd
+
+* Sun Mar 19 2006 Oden Eriksson <oeriksson@mandriva.com> 1.5a-3mdk
+- for some reason you can't use nobody,nogroup, bummer..., using
+  plan b
+
+* Sun Mar 19 2006 Oden Eriksson <oeriksson@mandriva.com> 1.5a-2mdk
+- second upload attempt (honeyd-webserver)
+
+* Sun Mar 19 2006 Oden Eriksson <oeriksson@mandriva.com> 1.5a-1mdk
+- 1.5a (Major feature enhancements)
+- rediffed patches; P1,P2
+- drop upstream implemented patches; P5
+- fix deps, ghostfiles, permissions, etc.
+
+* Fri Jul 29 2005 Nicolas L�cureuil <neoclust@mandriva.org> 1.0-5mdk
+- Fix BuildRequires
+
+* Thu Jul 14 2005 Oden Eriksson <oeriksson@mandriva.com> 1.0-4mdk
+- rebuilt against new libpcap-0.9.1 (aka. a "play safe" rebuild)
+- added P5 to make it compile with gcc4 (gentoo)
+
+* Thu Jan 20 2005 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 1.0-3mdk
+- rebuild for new readline
+
+* Fri Jan 07 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 1.0-2mdk
+- made some minor changes in S4
+
+* Mon Jan 03 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 1.0-1mdk
+- 1.0
+- set WANT_AUTOCONF_2_5, it is harmless.
+- add buildconflicts on edit-devel
+- added lib64 fixes (P2)
+- added P3 & P4 to make it easier to run as uid/gid honeyd
+- fixed S2 & S3 to make it run as uid/gid honeyd
+- added S5 to split out the python webserver config parts
+- added S6 to please rpmlint some
+
+* Mon Dec 06 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 0.8b-4mdk
+- rebuilt against new libevent
+
+* Sun Dec 05 2004 Michael Scherer <misc@mandrake.org> 0.8b-3mdk
+- Rebuild for new  python
+
+* Wed Jun 02 2004 Marcel Pol <mpol@mandrake.org> 0.8b-2mdk
+- buildrequires (slbd)
+- don't set WANT_AUTOCONF_2_5
+
+* Wed Apr 21 2004 Michael Scherer <misc@mandrake.org> 0.8b-1mdk
+- New release 0.8b
+- update patch #0
+- add honeydctl
+
+* Fri Apr 16 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 0.8a-1mdk
+- 0.8a
+

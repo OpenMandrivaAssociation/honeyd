@@ -1,0 +1,8 @@
+/var/log/honeyd/honeyd.log /var/log/honeyd/servicelog.log {
+    notifempty
+    missingok
+    create 644 honeyd honeyd
+    monthly
+    compress
+}
+

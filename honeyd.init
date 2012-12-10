@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# honeyd	This shell script takes care of starting and stopping honeyd.
+#
+# chkconfig: 345 55 45
+# description: honeyd is a virtual honeypot daemon.
+# probe: false
+# processname: honeyd
+# pidfile: /var/run/honeyd/honeyd.pid
+# config: /etc/honeyd.conf
+# config: /etc/sysconfig/honeyd
+# config: /etc/sysconfig/honeyd-webserver
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+[ -f /etc/honeyd.conf ] || exit 0
+
+[ -f /usr/sbin/honeyd ] || exit 0
+
+[ -f /etc/sysconfig/honeyd ] && . /etc/sysconfig/honeyd
+
+if [ -f /etc/sysconfig/honeyd-webserver ]; then
+    . /etc/sysconfig/honeyd-webserver
+    HONEYD_WEBSERVER_OPTIONS="${HONEYD_WEBSERVER_PORT:-"--webserver-port 80"} ${HONEYD_WEBSERVER_ROOT:-"--webserver-root /var/lib/honeyd/html"} --fix-webserver-permissions"
+fi
+
+# See how we were called.
+case "$1" in
+start)
+	echo -n "Starting honeyd: "
+	cd /usr/share/honeyd
+	daemon honeyd -u `id -u honeyd` -g `id -g honeyd` \
+	${HONEYD_LOGFILE:-"-l /var/log/honeyd/honeyd.log"} \
+	${HONEYD_SERVICELOG:-"-s /var/log/honeyd/servicelog.log"} \
+	${HONEYD_FINGERPRINTS:-"-p /usr/share/honeyd/nmap.prints"} \
+	${HONEYD_P0F_FILE:-""} \
+	${HONEYD_XPROBE:-"-x /usr/share/honeyd/xprobe2.conf"} \
+	${HONEYD_ASSOC:-"-a /usr/share/honeyd/nmap.assoc"} \
+	${HONEYD_FILE:-"-f /etc/honeyd.conf"} \
+	${HONEYD_INTERFACE:-""} \
+	${HONEYD_COLLECTOR:-"--disable-update"} \
+	${HONEYD_WEBSERVER_OPTIONS:-"--disable-webserver"} \
+	${HONEYD_INCLUDEDIR:-""} \
+	${HONEYD_NETWORKS:-""}
+	echo
+	touch /var/lock/subsys/honeyd
+	;;
+stop)
+	echo -n "Stopping honeyd: "
+	killproc honeyd
+	echo
+	rm -f /var/lock/subsys/honeyd
+	rm -f /var/lib/honeyd/honeyd.sock
+	;;
+status)
+	status honeyd
+	;;
+restart|reload)
+	$0 stop
+	$0 start
+	;;
+condrestart)
+	[ -f /var/lock/subsys/honeyd ] && restart
+	;;
+  *)
+	echo "Usage: honeyd {start|stop|status|restart|condrestart|reload}"
+	exit 1
+esac
+
+exit 0

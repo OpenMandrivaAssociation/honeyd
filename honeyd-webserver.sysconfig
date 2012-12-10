@@ -1,0 +1,7 @@
+
+# Specifies the port on which the web server should listen.
+#HONEYD_WEBSERVER_PORT="--webserver-port 80"
+
+# The path to the document tree of the webserver.
+#HONEYD_WEBSERVER_ROOT="--webserver-root /var/lib/honeyd/html"
+
