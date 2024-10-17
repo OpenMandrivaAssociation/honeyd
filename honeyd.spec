@@ -4,7 +4,7 @@ Version:	1.5c
 Release:	%mkrel 13
 License:	BSD
 Group:		System/Servers
-URL:		http://www.honeyd.org/
+URL:		https://www.honeyd.org/
 Source0:	http://www.citi.umich.edu/u/provos/honeyd/%{name}-%{version}.tar.gz
 Source2:	%{name}.conf
 Source3:	%{name}.init
