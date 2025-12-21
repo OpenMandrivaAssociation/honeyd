@@ -27,6 +27,9 @@ Requires(preun): rpm-helper
 Requires(pre): rpm-helper
 Requires(postun): rpm-helper
 Requires:	rrdtool
+BuildRequires:	autoconf
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	libevent-devel >= 1.0
 BuildRequires:	libdnet-devel
 BuildRequires:	libpcap-devel
