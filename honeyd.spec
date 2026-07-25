@@ -1,7 +1,7 @@
 Summary:	A Virtual Honeypot Daemon
 Name:		honeyd
 Version:	1.5c
-Release:	%mkrel 13
+Release:	14
 License:	BSD
 Group:		System/Servers
 URL:		https://www.honeyd.org/
@@ -332,7 +332,7 @@ rm -rf %{buildroot}
 - drop upstream implemented patches; P5
 - fix deps, ghostfiles, permissions, etc.
 
-* Fri Jul 29 2005 Nicolas Lécureuil <neoclust@mandriva.org> 1.0-5mdk
+* Fri Jul 29 2005 Nicolas Lï¿½cureuil <neoclust@mandriva.org> 1.0-5mdk
 - Fix BuildRequires
 
 * Thu Jul 14 2005 Oden Eriksson <oeriksson@mandriva.com> 1.0-4mdk
